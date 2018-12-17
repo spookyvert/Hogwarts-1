@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -29,4 +29,13 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+
+img {
+  max-width: 300px;
+}
+
+.house-container {
+  border: 1px solid black;
 }

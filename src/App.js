@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import CharacterContainer from './container/CharacterContainer'
+import HouseContainer from './container/HouseContainer'
+
+
 class App extends Component {
+  state = {
+    characters: []
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3001/potter_stuff')
+    .then(res => res.json())
+    .then(this.setCharacters)
+  }
+
+  setCharacters = (characters) => {
+    this.setState({characters})
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <CharacterContainer characters={this.state.characters}/>
+        <HouseContainer characters={this.state.characters}/>
       </div>
     );
   }
