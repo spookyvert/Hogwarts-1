@@ -1,25 +1,63 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
 import logo from './logo.svg';
+import HogwartsContainer from './components/HogwartsContainer'
+import HogwartsHouse from './components/HogwartsHouse'
 import './App.css';
+import adapter from './adapter.js'
+
 
 class App extends Component {
+  state = {
+    char: []
+  }
+
+  componentDidMount() {
+    this.charFetch()
+  }
+
+  charFetch = () => {
+
+    return adapter.get()
+      .then(charJSON => {
+
+        this.setState({
+          char: charJSON
+        }, () => console.log("char fetched executed" + this.state.char))
+      })
+  }
+
+  editChar = (char) => {
+    adapter.patch(char)
+  }
+
+
+  // EDIT
+  changeHouse = (e) => {
+
+    const stateCopy = [...this.state.char]
+    let foundCharacter = stateCopy.find(char => char.id === e.target.id)
+
+    foundCharacter.house = e.target.value
+
+
+
+    this.setState({
+      char: stateCopy
+    }, () => this.editChar(foundCharacter))
+  }
+
+
+
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div className="container">
+        <HogwartsContainer chars={this.state.char} editHouse={this.changeHouse}/>
+        <HogwartsHouse chars={this.state.char} editHouse={this.changeHouse}/>
+        </div>
       </div>
     );
   }
